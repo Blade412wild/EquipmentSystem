@@ -14,7 +14,7 @@ public class Interactor : MonoBehaviour
     private GameObject holdingObject;
     private IGrabAble currentItem;
     private GameObject currentPickedUpItem;
-    private GameObject ObjectInterator;
+    private GameObject objectInterator;
 
     bool pickUpitem;
 
@@ -23,6 +23,7 @@ public class Interactor : MonoBehaviour
     {
         SetActions();
         rb = GetComponent<Rigidbody>();
+        objectInterator = new GameObject("ObjectInterator");
     }
     private void Update()
     {
@@ -33,11 +34,11 @@ public class Interactor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.M))
         {
-
+            TestRelease();
         }
 
         if (pickUpitem == false) return;
-        ObjectInterator.transform.position = transform.position;
+        objectInterator.transform.position = transform.position;
     }
 
 
@@ -49,9 +50,8 @@ public class Interactor : MonoBehaviour
     private void TestGrab()
     {
         CheckObjects();
-        ObjectInterator = new GameObject("test object");
-        ObjectInterator.transform.position = currentItem.HoldPos.position;
-        currentPickedUpItem.transform.SetParent(ObjectInterator.transform, false);
+        objectInterator.transform.position = currentItem.HoldPos.position;
+        currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
         currentItem.HasBeenGrabed();
         pickUpitem = true;
@@ -60,7 +60,10 @@ public class Interactor : MonoBehaviour
 
     private void TestRelease()
     {
-
+        pickUpitem = false;
+        objectInterator.transform.DetachChildren();
+        currentItem.HasBeenReleased();
+        currentItem = null;
     }
 
     private void Release(InputAction.CallbackContext context)

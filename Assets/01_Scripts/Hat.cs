@@ -11,15 +11,18 @@ public class Hat : MonoBehaviour, IGrabAble
     private void Start()
     {
         HoldPos = GetComponentInChildren<Transform>();
+        Rb = GetComponent<Rigidbody>();
     }
 
     public void HasBeenGrabed()
     {
-        Debug.Log(transform.name);
+        transform.localPosition = new Vector3(0, 0, 0);
+        OwnPhysics.FreezePosition(Rb);
     }
+
 
     public void HasBeenReleased()
     {
-
+        OwnPhysics.UnFreezePosition(Rb);
     }
 }
