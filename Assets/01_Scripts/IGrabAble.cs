@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface IGrabAble
 {
-    public Transform holdPos { get; set; } 
+    Transform HoldPos { get; set; }
+    Rigidbody Rb { get; set; }
 
-
+    void HasBeenGrabed();
+    void HasBeenReleased();
 }
