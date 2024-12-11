@@ -1081,7 +1081,7 @@ Transform:
   m_GameObject: {fileID: 987546714}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.512, y: 1.117, z: 2.516}
+  m_LocalPosition: {x: -0.4752, y: 1.117, z: 2.5749}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1627,6 +1627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1367297757}
+  - component: {fileID: 1367297758}
   m_Layer: 0
   m_Name: HoldPos
   m_TagString: Untagged
@@ -1649,6 +1650,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 952634100215442894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1367297758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367297756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6d11f0b2cfd764fb2ba192dfd6891a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1367382858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,6 +2012,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1482442799}
+  - component: {fileID: 1482442800}
   m_Layer: 0
   m_Name: HoldPos
   m_TagString: Untagged
@@ -2021,6 +2035,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6592396690140867485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1482442800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482442798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6d11f0b2cfd764fb2ba192dfd6891a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1529934500
 GameObject:
   m_ObjectHideFlags: 0

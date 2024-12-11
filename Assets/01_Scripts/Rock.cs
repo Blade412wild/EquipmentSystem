@@ -22,7 +22,7 @@ public class Rock : MonoBehaviour, IGrabAble
 
     public void HasBeenReleased()
     {
-        OwnPhysics.UnFreezePosition(Rb);
+        OwnPhysics.RemoveConstraints(Rb);
     }
 
 

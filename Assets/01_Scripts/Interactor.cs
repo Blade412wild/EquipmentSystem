@@ -64,6 +64,7 @@ public class Interactor : MonoBehaviour
         objectInterator.transform.DetachChildren();
         currentItem.HasBeenReleased();
         currentItem = null;
+
     }
 
     private void Release(InputAction.CallbackContext context)
