@@ -10,23 +10,25 @@ public class Hat : MonoBehaviour, IGrabAble
 
     private void Start()
     {
-        HoldPos = GetComponentInChildren<HoldPos>().transform;
-        Rb = GetComponent<Rigidbody>();
+        SetVariables();
     }
 
     public void HasBeenGrabed()
     {
-        
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
-
         OwnPhysics.FreezePositionAndRotation(Rb);
-        OwnPhysics.FreezePosition(Rb);
     }
 
 
     public void HasBeenReleased()
     {
         OwnPhysics.RemoveConstraints(Rb);
+    }
+
+    public void SetVariables()
+    {
+        HoldPos = GetComponentInChildren<HoldPos>().transform;
+        Rb = GetComponent<Rigidbody>();
     }
 }

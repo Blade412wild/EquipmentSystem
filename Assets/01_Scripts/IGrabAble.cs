@@ -7,6 +7,7 @@ public interface IGrabAble
     Transform HoldPos { get; set; }
     Rigidbody Rb { get; set; }
 
+    void SetVariables();
     void HasBeenGrabed();
     void HasBeenReleased();
 }

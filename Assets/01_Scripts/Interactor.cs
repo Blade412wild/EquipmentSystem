@@ -11,7 +11,6 @@ public class Interactor : MonoBehaviour
     [SerializeField] private InputActionAsset ActionAssets;
 
     private Rigidbody rb;
-    private GameObject holdingObject;
     private IGrabAble currentItem;
     private GameObject currentPickedUpItem;
     private GameObject objectInterator;
@@ -37,8 +36,15 @@ public class Interactor : MonoBehaviour
             TestRelease();
         }
 
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            TestActivate();
+        }
+
         if (pickUpitem == false) return;
         objectInterator.transform.position = transform.position;
+        objectInterator.transform.rotation = transform.rotation;
+
     }
 
 
@@ -49,7 +55,9 @@ public class Interactor : MonoBehaviour
 
     private void TestGrab()
     {
-        CheckObjects();
+        bool objectInArea = CheckObjects();
+        if (objectInArea == false) return;
+
         objectInterator.transform.position = currentItem.HoldPos.position;
         currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
@@ -64,7 +72,16 @@ public class Interactor : MonoBehaviour
         objectInterator.transform.DetachChildren();
         currentItem.HasBeenReleased();
         currentItem = null;
+        currentPickedUpItem = null;
+    }
 
+    private void TestActivate()
+    {
+        if (currentItem == null) return;
+        if(currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
+        {
+            activatableItem.Activate();
+        }
     }
 
     private void Release(InputAction.CallbackContext context)
@@ -77,7 +94,7 @@ public class Interactor : MonoBehaviour
 
     }
 
-    private void CheckObjects()
+    private bool CheckObjects()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0.1f);
         for (int i = 0; i < hitColliders.Length; i++)
@@ -86,14 +103,11 @@ public class Interactor : MonoBehaviour
             {
                 currentPickedUpItem = hitColliders[i].gameObject;
                 currentItem = grabObject;
-                return;
-                //grabObject.HasBeenGrabed(); return;
+                return true;
             }
         }
 
-
-
-
+        return false;
     }
 
     private void SetActions()
