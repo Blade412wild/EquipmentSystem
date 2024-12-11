@@ -68,9 +68,19 @@ public class Interactor : MonoBehaviour
 
     private void TestRelease()
     {
+        if(currentItem == null) return;
         pickUpitem = false;
         objectInterator.transform.DetachChildren();
-        currentItem.HasBeenReleased();
+
+        if (currentPickedUpItem.TryGetComponent(out IPlaceAble placeAbleItem))
+        {
+            placeAbleItem.PlaceItem();
+        }
+        else
+        {
+            currentItem.HasBeenReleased();
+        }
+
         currentItem = null;
         currentPickedUpItem = null;
     }
@@ -78,7 +88,7 @@ public class Interactor : MonoBehaviour
     private void TestActivate()
     {
         if (currentItem == null) return;
-        if(currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
+        if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
         {
             activatableItem.Activate();
         }

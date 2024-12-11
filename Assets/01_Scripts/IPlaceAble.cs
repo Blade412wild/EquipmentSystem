@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class IPlaceAble : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public interface IPlaceAble 
+{   
+    bool InArea { get; set; }
+    Transform PlacementParentTrans { get; set; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void PlaceItem();
 }

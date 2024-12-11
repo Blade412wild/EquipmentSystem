@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Hat : MonoBehaviour, IGrabAble
+public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
 {
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
+    public bool InArea { get; set; }
+    public Transform PlacementParentTrans { get ; set; }
 
     private void Start()
     {
@@ -30,5 +32,18 @@ public class Hat : MonoBehaviour, IGrabAble
     {
         HoldPos = GetComponentInChildren<HoldPos>().transform;
         Rb = GetComponent<Rigidbody>();
+    }
+
+    public void PlaceItem()
+    {
+        if (InArea)
+        {
+            transform.SetParent(PlacementParentTrans);
+            transform.position = PlacementParentTrans.position;
+        }
+        else
+        {
+            HasBeenReleased();
+        }
     }
 }
