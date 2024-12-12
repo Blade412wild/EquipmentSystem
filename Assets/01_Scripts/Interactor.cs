@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,17 +8,19 @@ using UnityEngine.InputSystem.HID;
 [RequireComponent(typeof(Rigidbody))]
 public class Interactor : MonoBehaviour
 {
+    public event Action<Interactor> OnActivatedObject;
     private enum Hands { Left, Right }
+    public GameObject currentPickedUpItem { get; private set; }
+
     [SerializeField] private Hands hand;
     [SerializeField] private List<InputActionAsset> m_ActionAssets;
     [SerializeField] private InputActionAsset ActionAssets;
 
     private Rigidbody rb;
     private IGrabAble currentItem;
-    private GameObject currentPickedUpItem;
     private GameObject objectInterator;
 
-    bool pickUpitem;
+    private bool pickUpitem;
 
 
     private void Start()
@@ -52,8 +55,9 @@ public class Interactor : MonoBehaviour
 
     private void Grab(InputAction.CallbackContext context)
     {
-        bool objectInArea = CheckObjects();
+        bool objectInArea = CheckGrabAbleObjects();
         if (objectInArea == false) return;
+
 
         objectInterator.transform.position = currentItem.HoldPos.position;
         objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
@@ -65,7 +69,7 @@ public class Interactor : MonoBehaviour
 
     private void TestGrab()
     {
-        bool objectInArea = CheckObjects();
+        bool objectInArea = CheckGrabAbleObjects();
         if (objectInArea == false) return;
 
         objectInterator.transform.position = currentItem.HoldPos.position;
@@ -123,17 +127,33 @@ public class Interactor : MonoBehaviour
         currentItem = null;
         currentPickedUpItem = null;
     }
+    private void SecondButtonPressed(InputAction.CallbackContext context)
+    {
+        if (currentItem == null) return;
+        if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
+        {
+            activatableItem.OnPrimaryButton();
+        }
+
+    }
 
     private void Activate(InputAction.CallbackContext context)
     {
         if (currentItem == null) return;
         if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
         {
+            if (currentPickedUpItem.TryGetComponent(out AmmoClipFirst ammoClip))
+            {
+                Debug.Log("It's a ammoClip");
+
+                OnActivatedObject?.Invoke(this);
+            }
+            Debug.Log("activate");
             activatableItem.Activate();
         }
     }
 
-    private bool CheckObjects()
+    private bool CheckGrabAbleObjects()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0.1f);
         for (int i = 0; i < hitColliders.Length; i++)
@@ -156,9 +176,13 @@ public class Interactor : MonoBehaviour
             var actionMapLeft = ActionAssets.FindActionMap("XRI LeftHand Interaction");
             var lefthandGrab = actionMapLeft.FindAction("Select");
             var lefthandActivate = actionMapLeft.FindAction("Activate");
+            var leftHandButton = actionMapLeft.FindAction("Button");
+
             lefthandGrab.performed += Grab;
             lefthandGrab.canceled += Release;
             lefthandActivate.performed += Activate;
+            leftHandButton.performed += SecondButtonPressed;
+
 
         }
         else
@@ -166,9 +190,12 @@ public class Interactor : MonoBehaviour
             var actionMapRight = ActionAssets.FindActionMap("XRI RightHand Interaction");
             var righthandGrab = actionMapRight.FindAction("Select");
             var righthanActivate = actionMapRight.FindAction("Activate");
+            var rightHandButton = actionMapRight.FindAction("Button");
+
             righthandGrab.performed += Grab;
             righthandGrab.canceled += Release;
             righthanActivate.performed += Activate;
+            rightHandButton.performed += SecondButtonPressed;
         }
     }
 }

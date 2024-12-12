@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AutomaticState : State<Gun>
+public class AutomaticState : State<Pistol>
 {
-    public AutomaticState(Gun owner) : base(owner)
+    public AutomaticState(Pistol owner) : base(owner)
     {
 
     }

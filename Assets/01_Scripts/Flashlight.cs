@@ -7,6 +7,8 @@ public class Flashlight : MonoBehaviour, IGrabAble, IActivateable
 {
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
+    public Interactor Interactor { get; set; }
+
 
     private bool activated;
     private Light light;
@@ -60,6 +62,8 @@ public class Flashlight : MonoBehaviour, IGrabAble, IActivateable
         light.enabled = false;
     }
 
-
-
+    public void OnPrimaryButton()
+    {
+        //niks
+    }
 }

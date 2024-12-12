@@ -12,9 +12,12 @@ public static class OwnPhysics
     static public void FreezePositionAndRotation(Rigidbody rb)
     {
         rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ
-                        |RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+                        | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
-
+    static public void FreezeRotation(Rigidbody rb)
+    {
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+    }
     static public void RemoveConstraints(Rigidbody rb)
     {
         rb.constraints = RigidbodyConstraints.None;

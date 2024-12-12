@@ -1,20 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
+public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
 {
+    static public event Action OnAmmoActivation;
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
     public bool InArea { get; set; }
     public Transform PlacementParentTrans { get; set; }
-
-    [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private List<Transform> bulletSpots = new List<Transform>();
-
-    [SerializeField] private List<Bullet> bullets;
-    private int bulletsCount;
+    public Interactor Interactor { get; set; }
     private Collider collider;
 
 
@@ -23,14 +20,7 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
     private void Start()
     {
         SetVariables();
-        CreateBullets();
     }
-
-    private void Update()
-    {
-
-    }
-
     public void HasBeenGrabed()
     {
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
@@ -66,36 +56,12 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
         }
     }
 
-
-    public Bullet TakeBullet()
+    public void Activate()
     {
-        if (bullets.Count <= 0) return null;
-
-        Bullet bullet;
-        bullet = bullets[0];
-        bullets.Remove(bullet);
-        SortBullets();
-        return bullet;
+        Destroy(this.gameObject);
     }
 
-    private void CreateBullets()
+    public void OnPrimaryButton()
     {
-        bullets = new List<Bullet>();
-
-        for (int i = 0; i < bulletSpots.Count; i++)
-        {
-            Bullet bullet = Instantiate(bulletPrefab, bulletSpots[i]);
-            bullets.Add(bullet);
-
-        }
-    }
-
-    private void SortBullets()
-    {
-        for (int i = 0; i < bullets.Count; i++)
-        {
-            bullets[i].transform.SetParent(bulletSpots[i].transform);
-            bullets[i].transform.localPosition = new Vector3(0, 0, 0);
-        }
     }
 }

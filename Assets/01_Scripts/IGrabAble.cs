@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IGrabAble
 {
+    Interactor Interactor { get; set; }
     Transform HoldPos { get; set; }
     Rigidbody Rb { get; set; }
 

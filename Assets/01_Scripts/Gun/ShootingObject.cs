@@ -21,8 +21,7 @@ public abstract class ShootingObject : MonoBehaviour
         if (bullet != null)
         {
             bullet.transform.position = bulletSpawnTrans.position;
-            bullet.ActivateBullet(force);
-            ResetShot();
+            bullet.ActivateBullet(force, bulletSpawnTrans);
         }
         else
         {
@@ -34,16 +33,12 @@ public abstract class ShootingObject : MonoBehaviour
 
     public virtual void Reload()
     {
-
+        ammoClip.Reload();
+        ResetShot();
     }
 
     public virtual void ResetShot()
     {
         MayShoot = true;
-    }
-
-    public virtual void CreateBullet()
-    {
-
     }
 }

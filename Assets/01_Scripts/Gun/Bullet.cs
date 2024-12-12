@@ -15,9 +15,17 @@ public class Bullet : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
     }
 
-    public void ActivateBullet(float force)
+    public void ActivateBullet(float force, Transform spawnpoint)
     {
-        rb.AddForce(Vector3.forward * force, ForceMode.Impulse);
+        OwnPhysics.FreezeRotation(rb);
+        rb.AddForce(spawnpoint.forward * force, ForceMode.Impulse);
+        
         collider.enabled = true;
+        transform.parent = null;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(this.gameObject);
     }
 }

@@ -4,5 +4,34 @@ using UnityEngine;
 
 public class HandInteractorManager : MonoBehaviour
 {
+    [SerializeField] private Interactor leftHand;
+    [SerializeField] private Interactor rightHand;
+
+    [SerializeField] private ShootingObject[] topHand;
+
+    private void Start()
+    {
+        leftHand.OnActivatedObject += CheckOtherHandForGun;
+        rightHand.OnActivatedObject += CheckOtherHandForGun;
+    }
+
+    public void CheckOtherHandForGun(Interactor hand)
+    {
+        if(hand == leftHand)
+        {
+            if(rightHand.currentPickedUpItem.TryGetComponent(out ShootingObject shootAbleObject))
+            {
+                shootAbleObject.Reload();
+            }
+        }
+        else
+        {
+            if (leftHand.currentPickedUpItem.TryGetComponent(out ShootingObject shootAbleObject))
+            {
+                shootAbleObject.Reload();
+            }
+        }
+    }
+
 
 }

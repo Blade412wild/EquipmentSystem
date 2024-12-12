@@ -7,6 +7,8 @@ public class Rock : MonoBehaviour, IGrabAble
 {
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
+    public Interactor Interactor { get; set; }
+
     private void Start()
     {
         SetVariables();

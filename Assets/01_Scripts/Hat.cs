@@ -9,6 +9,8 @@ public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
     public Rigidbody Rb { get; set; }
     public bool InArea { get; set; }
     public Transform PlacementParentTrans { get ; set; }
+    public Interactor Interactor { get; set; }
+
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
         {
             transform.SetParent(PlacementParentTrans);
             transform.position = PlacementParentTrans.position;
+            transform.rotation = PlacementParentTrans.rotation;
         }
         else
         {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Gun : MonoBehaviour, IGrabAble, IActivateable
+public class Pistol : ShootingObject, IGrabAble, IActivateable
 {
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
+    public Interactor Interactor { get; set; }
+
 
     private StateMachine stateMachine;
 
@@ -19,6 +21,7 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
     {
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
+        //transform.rotation = HoldPos.rotation;
         OwnPhysics.FreezePositionAndRotation(Rb);
     }
 
@@ -41,16 +44,12 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
 
     private void Schoot()
     {
+        base.Shoot(10f);
         Debug.Log("bang");
     }
-
-    private void SetupStateMachine()
+    public void OnPrimaryButton()
     {
-        stateMachine = new StateMachine();
-
-        IState nonAutomaticMode = new NonAutomaticState(this);
-        IState automaticMode = new AutomaticState(this);
-
-        stateMachine.SwitchState(nonAutomaticMode);
+        // switch mode
+        Debug.Log("switch mode");
     }
 }
