@@ -8,6 +8,8 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
 
+    private StateMachine stateMachine;
+
     private void Start()
     {
         SetVariables();
@@ -15,7 +17,6 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
 
     public void HasBeenGrabed()
     {
-
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
         OwnPhysics.FreezePositionAndRotation(Rb);
@@ -41,5 +42,15 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
     private void Schoot()
     {
         Debug.Log("bang");
+    }
+
+    private void SetupStateMachine()
+    {
+        stateMachine = new StateMachine();
+
+        IState nonAutomaticMode = new NonAutomaticState(this);
+        IState automaticMode = new AutomaticState(this);
+
+        stateMachine.SwitchState(nonAutomaticMode);
     }
 }

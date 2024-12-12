@@ -10,17 +10,25 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
     public bool InArea { get; set; }
     public Transform PlacementParentTrans { get; set; }
 
+    [SerializeField] private Bullet bulletPrefab;
+    [SerializeField] private List<Transform> bulletSpots = new List<Transform>();
+
+    [SerializeField]private List<Bullet> bullets;
+    private int bulletsCount;
     private Collider collider;
+
+
+
 
     private void Start()
     {
         SetVariables();
-
+        CreateBullets();
     }
 
     private void Update()
     {
-        Debug.Log(PlacementParentTrans);
+
     }
 
     public void HasBeenGrabed()
@@ -55,6 +63,38 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
         else
         {
             HasBeenReleased();
+        }
+    }
+
+
+    public Bullet TakeBullet()
+    {
+        if (bullets.Count <= 0) return null;
+
+        Bullet bullet;
+        bullet = bullets[0];
+        bullets.Remove(bullet);
+        SortBullets();
+        return bullet;
+    }
+
+    private void CreateBullets()
+    {
+        bullets = new List<Bullet>();
+
+        for (int i = 0; i < bulletSpots.Count; i++)
+        {
+            Bullet bullet = Instantiate(bulletPrefab, bulletSpots[i].position, Quaternion.identity);
+            bullets.Add(bullet);
+
+        }
+    }
+
+    private void SortBullets()
+    {
+        for(int i = 0; i < bullets.Count; i++)
+        {
+            bullets[i].transform.position = bulletSpots[i].transform.position;
         }
     }
 }
