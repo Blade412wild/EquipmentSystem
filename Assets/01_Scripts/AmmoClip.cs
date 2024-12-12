@@ -13,7 +13,7 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
     [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private List<Transform> bulletSpots = new List<Transform>();
 
-    [SerializeField]private List<Bullet> bullets;
+    [SerializeField] private List<Bullet> bullets;
     private int bulletsCount;
     private Collider collider;
 
@@ -84,7 +84,7 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
 
         for (int i = 0; i < bulletSpots.Count; i++)
         {
-            Bullet bullet = Instantiate(bulletPrefab, bulletSpots[i].position, Quaternion.identity);
+            Bullet bullet = Instantiate(bulletPrefab, bulletSpots[i]);
             bullets.Add(bullet);
 
         }
@@ -92,9 +92,10 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
 
     private void SortBullets()
     {
-        for(int i = 0; i < bullets.Count; i++)
+        for (int i = 0; i < bullets.Count; i++)
         {
-            bullets[i].transform.position = bulletSpots[i].transform.position;
+            bullets[i].transform.SetParent(bulletSpots[i].transform);
+            bullets[i].transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }

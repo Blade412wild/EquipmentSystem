@@ -15,7 +15,7 @@ public class Pistol : ShootingObject
     {
         if(Input.GetKeyDown(KeyCode.S))
         {
-            base.Shoot();
+            base.Shoot(10.0f);
         }
     }
 }
