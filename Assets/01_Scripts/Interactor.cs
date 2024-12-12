@@ -7,6 +7,8 @@ using UnityEngine.InputSystem.HID;
 [RequireComponent(typeof(Rigidbody))]
 public class Interactor : MonoBehaviour
 {
+    private enum Hands { Left, Right }
+    [SerializeField] private Hands hand;
     [SerializeField] private List<InputActionAsset> m_ActionAssets;
     [SerializeField] private InputActionAsset ActionAssets;
 
@@ -50,7 +52,15 @@ public class Interactor : MonoBehaviour
 
     private void Grab(InputAction.CallbackContext context)
     {
-        CheckObjects();
+        bool objectInArea = CheckObjects();
+        if (objectInArea == false) return;
+
+        objectInterator.transform.position = currentItem.HoldPos.position;
+        objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
+        currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
+
+        currentItem.HasBeenGrabed();
+        pickUpitem = true;
     }
 
     private void TestGrab()
@@ -59,6 +69,7 @@ public class Interactor : MonoBehaviour
         if (objectInArea == false) return;
 
         objectInterator.transform.position = currentItem.HoldPos.position;
+        objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
         currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
         currentItem.HasBeenGrabed();
@@ -68,7 +79,7 @@ public class Interactor : MonoBehaviour
 
     private void TestRelease()
     {
-        if(currentItem == null) return;
+        if (currentItem == null) return;
         pickUpitem = false;
         objectInterator.transform.DetachChildren();
 
@@ -96,12 +107,30 @@ public class Interactor : MonoBehaviour
 
     private void Release(InputAction.CallbackContext context)
     {
+        if (currentItem == null) return;
+        pickUpitem = false;
+        objectInterator.transform.DetachChildren();
 
+        if (currentPickedUpItem.TryGetComponent(out IPlaceAble placeAbleItem))
+        {
+            placeAbleItem.PlaceItem();
+        }
+        else
+        {
+            currentItem.HasBeenReleased();
+        }
+
+        currentItem = null;
+        currentPickedUpItem = null;
     }
 
     private void Activate(InputAction.CallbackContext context)
     {
-
+        if (currentItem == null) return;
+        if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
+        {
+            activatableItem.Activate();
+        }
     }
 
     private bool CheckObjects()
@@ -122,22 +151,24 @@ public class Interactor : MonoBehaviour
 
     private void SetActions()
     {
-        var actionMapLeft = ActionAssets.FindActionMap("XRI LeftHand Interaction");
-        var actionMapRight = ActionAssets.FindActionMap("XRI RightHand Interaction");
+        if (hand == Hands.Left)
+        {
+            var actionMapLeft = ActionAssets.FindActionMap("XRI LeftHand Interaction");
+            var lefthandGrab = actionMapLeft.FindAction("Select");
+            var lefthandActivate = actionMapLeft.FindAction("Activate");
+            lefthandGrab.performed += Grab;
+            lefthandGrab.canceled += Release;
+            lefthandActivate.performed += Activate;
 
-        var lefthandGrab = actionMapLeft.FindAction("Select");
-        var righthandGrab = actionMapRight.FindAction("Select");
-
-        var lefthandActivate = actionMapLeft.FindAction("Activate");
-        var righthanActivate = actionMapRight.FindAction("Activate");
-
-        lefthandGrab.performed += Grab;
-        righthandGrab.performed += Grab;
-
-        lefthandGrab.canceled += Release;
-        righthandGrab.canceled += Release;
-
-        righthanActivate.performed += Activate;
-        lefthandActivate.performed += Activate;
+        }
+        else
+        {
+            var actionMapRight = ActionAssets.FindActionMap("XRI RightHand Interaction");
+            var righthandGrab = actionMapRight.FindAction("Select");
+            var righthanActivate = actionMapRight.FindAction("Activate");
+            righthandGrab.performed += Grab;
+            righthandGrab.canceled += Release;
+            righthanActivate.performed += Activate;
+        }
     }
 }

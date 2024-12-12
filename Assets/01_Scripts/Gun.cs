@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour, IGrabAble, IActivateable
 
     public void HasBeenGrabed()
     {
+
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
         OwnPhysics.FreezePositionAndRotation(Rb);

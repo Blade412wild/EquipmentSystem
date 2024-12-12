@@ -51,7 +51,6 @@ public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
             transform.SetParent(PlacementParentTrans);
             transform.position = PlacementParentTrans.position;
             transform.rotation = new Quaternion(0, 0, 0, 0);
-
         }
         else
         {
