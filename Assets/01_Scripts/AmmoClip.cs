@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class AmmoClip : MonoBehaviour, IGrabAble
+public class AmmoClip : MonoBehaviour, IGrabAble, IPlaceAble
 {
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
+    public bool InArea { get; set; }
+    public Transform PlacementParentTrans { get; set; }
+
+    private Collider collider;
 
     private void Start()
     {
         SetVariables();
+
+    }
+
+    private void Update()
+    {
+        Debug.Log(PlacementParentTrans);
     }
 
     public void HasBeenGrabed()
@@ -30,5 +40,22 @@ public class AmmoClip : MonoBehaviour, IGrabAble
     {
         HoldPos = GetComponentInChildren<HoldPos>().transform;
         Rb = GetComponent<Rigidbody>();
+        collider = GetComponent<BoxCollider>();
+    }
+
+    public void PlaceItem()
+    {
+        if (InArea)
+        {
+            collider.isTrigger = true;
+            transform.SetParent(PlacementParentTrans);
+            transform.position = PlacementParentTrans.position;
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        }
+        else
+        {
+            HasBeenReleased();
+        }
     }
 }
