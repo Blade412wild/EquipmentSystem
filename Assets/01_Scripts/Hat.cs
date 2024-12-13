@@ -22,6 +22,7 @@ public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
         Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
         OwnPhysics.FreezePositionAndRotation(Rb);
     }
 

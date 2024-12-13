@@ -18,7 +18,8 @@ public class Rock : MonoBehaviour, IGrabAble
     {
         Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
-        transform.localPosition = new Vector3 (0, 0, 0);
+        transform.localPosition = MovePostion;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
         OwnPhysics.FreezePositionAndRotation(Rb);
     }
 

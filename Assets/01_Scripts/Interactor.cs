@@ -58,9 +58,8 @@ public class Interactor : MonoBehaviour
         bool objectInArea = CheckGrabAbleObjects();
         if (objectInArea == false) return;
 
-
         objectInterator.transform.position = currentItem.HoldPos.position;
-        objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
+        //objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
         currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
         currentItem.HasBeenGrabed(this);
