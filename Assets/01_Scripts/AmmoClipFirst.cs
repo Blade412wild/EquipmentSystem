@@ -64,7 +64,11 @@ public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
         Destroy(this.gameObject);
     }
 
-    public void OnPrimaryButton()
+    public void OnSecondaryButton()
+    {
+    }
+
+    public void DeActivate()
     {
     }
 }

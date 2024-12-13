@@ -5,9 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Pistol : ShootingObject, IGrabAble, IActivateable
 {
+    private enum PistolMode { Single, Automatic }
+    private PistolMode mode = PistolMode.Single;
     public Transform HoldPos { get; set; }
     public Rigidbody Rb { get; set; }
     public Interactor Interactor { get; set; }
+
+    private bool TriggerIsPressed = false;
 
 
     private StateMachine stateMachine;
@@ -15,6 +19,14 @@ public class Pistol : ShootingObject, IGrabAble, IActivateable
     private void Start()
     {
         SetVariables();
+    }
+
+    private void Update()
+    {
+        if (mode == PistolMode.Automatic && TriggerIsPressed)
+        {
+            base.Shoot(15);
+        }
     }
 
     public void HasBeenGrabed(Interactor interactor)
@@ -41,17 +53,28 @@ public class Pistol : ShootingObject, IGrabAble, IActivateable
 
     public void Activate()
     {
-        Schoot();
+        TriggerIsPressed = true;
+        if (mode == PistolMode.Single)
+        {
+            base.Shoot(20);
+        }
+
     }
 
-    private void Schoot()
+    public void OnSecondaryButton()
     {
-        base.Shoot(10f);
-        Debug.Log("bang");
+        if(mode == PistolMode.Automatic)
+        {
+            mode = PistolMode.Single;
+        }
+        else
+        {
+            mode = PistolMode.Automatic;
+        }
     }
-    public void OnPrimaryButton()
+
+    public void DeActivate()
     {
-        // switch mode
-        Debug.Log("switch mode");
+        TriggerIsPressed = false;
     }
 }

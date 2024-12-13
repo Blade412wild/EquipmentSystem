@@ -132,7 +132,7 @@ public class Interactor : MonoBehaviour
         if (currentItem == null) return;
         if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
         {
-            activatableItem.OnPrimaryButton();
+            activatableItem.OnSecondaryButton();
         }
 
     }
@@ -150,6 +150,16 @@ public class Interactor : MonoBehaviour
             }
             Debug.Log("activate");
             activatableItem.Activate();
+        }
+    }
+
+    private void DeActivate(InputAction.CallbackContext context)
+    {
+        if (currentItem == null || currentPickedUpItem == null) return;
+        if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
+        {
+            Debug.Log("activate");
+            activatableItem.DeActivate();
         }
     }
 
@@ -181,6 +191,7 @@ public class Interactor : MonoBehaviour
             lefthandGrab.performed += Grab;
             lefthandGrab.canceled += Release;
             lefthandActivate.performed += Activate;
+            lefthandActivate.canceled += DeActivate;
             leftHandButton.performed += SecondButtonPressed;
 
 
@@ -195,6 +206,7 @@ public class Interactor : MonoBehaviour
             righthandGrab.performed += Grab;
             righthandGrab.canceled += Release;
             righthanActivate.performed += Activate;
+            righthanActivate.canceled += DeActivate;
             rightHandButton.performed += SecondButtonPressed;
         }
     }

@@ -65,8 +65,12 @@ public class Flashlight : MonoBehaviour, IGrabAble, IActivateable
         light.enabled = false;
     }
 
-    public void OnPrimaryButton()
+    public void OnSecondaryButton()
     {
         //niks
+    }
+
+    public void DeActivate()
+    {
     }
 }
