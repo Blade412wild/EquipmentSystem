@@ -31,25 +31,9 @@ public class Interactor : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TestGrab();
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            TestRelease();
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            TestActivate();
-        }
-
         if (pickUpitem == false) return;
         objectInterator.transform.position = transform.position;
         objectInterator.transform.rotation = transform.rotation;
-
     }
 
 
@@ -64,48 +48,6 @@ public class Interactor : MonoBehaviour
 
         currentItem.HasBeenGrabed(this);
         pickUpitem = true;
-    }
-
-    private void TestGrab()
-    {
-        bool objectInArea = CheckGrabAbleObjects();
-        if (objectInArea == false) return;
-
-        objectInterator.transform.position = currentItem.HoldPos.position;
-        objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
-        currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
-
-        currentItem.HasBeenGrabed(this);
-        pickUpitem = true;
-
-    }
-
-    private void TestRelease()
-    {
-        if (currentItem == null) return;
-        pickUpitem = false;
-        objectInterator.transform.DetachChildren();
-
-        if (currentPickedUpItem.TryGetComponent(out IPlaceAble placeAbleItem))
-        {
-            placeAbleItem.PlaceItem();
-        }
-        else
-        {
-            currentItem.HasBeenReleased();
-        }
-
-        currentItem = null;
-        currentPickedUpItem = null;
-    }
-
-    private void TestActivate()
-    {
-        if (currentItem == null) return;
-        if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
-        {
-            activatableItem.Activate();
-        }
     }
 
     private void Release(InputAction.CallbackContext context)
@@ -142,7 +84,7 @@ public class Interactor : MonoBehaviour
         if (currentItem == null || currentPickedUpItem == null) return;
         if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
         {
-            if (currentPickedUpItem.TryGetComponent(out AmmoClipFirst ammoClip))
+            if (currentPickedUpItem.TryGetComponent(out AmmoClipInteractable ammoClip))
             {
                 Debug.Log("It's a ammoClip");
 

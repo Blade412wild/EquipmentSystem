@@ -59,13 +59,7 @@ public class AmmoClip : MonoBehaviour
 
         for (int i = 0; i < bullets.Count; i++)
         {
-            //removebullets.Add(bullets[i]);
-            //bullets[i]
             Destroy(bullets[i].gameObject);
         }
-
-
-        // removebullets.Clear();
     }
-
 }

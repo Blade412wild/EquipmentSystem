@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
+public class AmmoClipInteractable : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
 {
     static public event Action OnAmmoActivation;
     public Transform HoldPos { get; set; }

@@ -18,19 +18,16 @@ public abstract class ShootingObject : MonoBehaviour
     {
         if (readyToShoot != true) return;
 
-
         Bullet bullet = ammoClip.TakeBullet();
         if (bullet != null)
         {
             readyToShoot = false;
-
 
             bullet.transform.position = bulletSpawnTrans.position;
             bullet.ActivateBullet(force, bulletSpawnTrans);
 
             timer = new Timer(timeBetweenShot);
             timer.OnTimerIsDone += ResetShot;
-            //Invoke("ResetShot", timeBetweenShot);
         }
         else
         {
