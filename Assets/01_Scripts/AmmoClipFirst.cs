@@ -12,6 +12,7 @@ public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
     public bool InArea { get; set; }
     public Transform PlacementParentTrans { get; set; }
     public Interactor Interactor { get; set; }
+
     private Collider collider;
 
 
@@ -21,8 +22,9 @@ public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
     {
         SetVariables();
     }
-    public void HasBeenGrabed()
+    public void HasBeenGrabed(Interactor interactor)
     {
+        Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
         OwnPhysics.FreezePositionAndRotation(Rb);
@@ -32,6 +34,7 @@ public class AmmoClipFirst : MonoBehaviour, IGrabAble, IPlaceAble, IActivateable
     public void HasBeenReleased()
     {
         OwnPhysics.RemoveConstraints(Rb);
+        Rb.velocity = Interactor.Rb.velocity;
     }
 
     public void SetVariables()

@@ -17,8 +17,9 @@ public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
         SetVariables();
     }
 
-    public void HasBeenGrabed()
+    public void HasBeenGrabed(Interactor interactor)
     {
+        Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
         OwnPhysics.FreezePositionAndRotation(Rb);
@@ -28,6 +29,7 @@ public class Hat : MonoBehaviour, IGrabAble, IPlaceAble
     public void HasBeenReleased()
     {
         OwnPhysics.RemoveConstraints(Rb);
+        Rb.velocity = Interactor.Rb.velocity;
     }
 
     public void SetVariables()

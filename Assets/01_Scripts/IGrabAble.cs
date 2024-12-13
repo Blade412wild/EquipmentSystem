@@ -9,6 +9,6 @@ public interface IGrabAble
     Rigidbody Rb { get; set; }
 
     void SetVariables();
-    void HasBeenGrabed();
+    void HasBeenGrabed(Interactor interactor);
     void HasBeenReleased();
 }

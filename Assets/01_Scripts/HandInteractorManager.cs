@@ -19,13 +19,15 @@ public class HandInteractorManager : MonoBehaviour
     {
         if(hand == leftHand)
         {
-            if(rightHand.currentPickedUpItem.TryGetComponent(out ShootingObject shootAbleObject))
+            if (rightHand.currentPickedUpItem == null) return;
+            if (rightHand.currentPickedUpItem.TryGetComponent(out ShootingObject shootAbleObject))
             {
                 shootAbleObject.Reload();
             }
         }
         else
         {
+            if (leftHand.currentPickedUpItem == null) return;
             if (leftHand.currentPickedUpItem.TryGetComponent(out ShootingObject shootAbleObject))
             {
                 shootAbleObject.Reload();

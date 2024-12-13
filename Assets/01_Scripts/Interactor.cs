@@ -11,12 +11,12 @@ public class Interactor : MonoBehaviour
     public event Action<Interactor> OnActivatedObject;
     private enum Hands { Left, Right }
     public GameObject currentPickedUpItem { get; private set; }
+    public Rigidbody Rb {get; private set;}
 
     [SerializeField] private Hands hand;
     [SerializeField] private List<InputActionAsset> m_ActionAssets;
     [SerializeField] private InputActionAsset ActionAssets;
 
-    private Rigidbody rb;
     private IGrabAble currentItem;
     private GameObject objectInterator;
 
@@ -26,7 +26,7 @@ public class Interactor : MonoBehaviour
     private void Start()
     {
         SetActions();
-        rb = GetComponent<Rigidbody>();
+        Rb = GetComponent<Rigidbody>();
         objectInterator = new GameObject("ObjectInterator");
     }
     private void Update()
@@ -63,7 +63,7 @@ public class Interactor : MonoBehaviour
         objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
         currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
-        currentItem.HasBeenGrabed();
+        currentItem.HasBeenGrabed(this);
         pickUpitem = true;
     }
 
@@ -76,7 +76,7 @@ public class Interactor : MonoBehaviour
         objectInterator.transform.rotation = currentItem.HoldPos.rotation; // een check
         currentPickedUpItem.transform.SetParent(objectInterator.transform, false);
 
-        currentItem.HasBeenGrabed();
+        currentItem.HasBeenGrabed(this);
         pickUpitem = true;
 
     }
@@ -111,9 +111,10 @@ public class Interactor : MonoBehaviour
 
     private void Release(InputAction.CallbackContext context)
     {
-        if (currentItem == null) return;
+        if (currentPickedUpItem == null) return;
         pickUpitem = false;
         objectInterator.transform.DetachChildren();
+
 
         if (currentPickedUpItem.TryGetComponent(out IPlaceAble placeAbleItem))
         {
@@ -139,7 +140,7 @@ public class Interactor : MonoBehaviour
 
     private void Activate(InputAction.CallbackContext context)
     {
-        if (currentItem == null) return;
+        if (currentItem == null || currentPickedUpItem == null) return;
         if (currentPickedUpItem.TryGetComponent(out IActivateable activatableItem))
         {
             if (currentPickedUpItem.TryGetComponent(out AmmoClipFirst ammoClip))

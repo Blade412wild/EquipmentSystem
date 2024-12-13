@@ -14,8 +14,9 @@ public class Rock : MonoBehaviour, IGrabAble
         SetVariables();
     }
 
-    public void HasBeenGrabed()
+    public void HasBeenGrabed(Interactor interactor)
     {
+        Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = new Vector3 (0, 0, 0);
         OwnPhysics.FreezePositionAndRotation(Rb);
@@ -25,6 +26,7 @@ public class Rock : MonoBehaviour, IGrabAble
     public void HasBeenReleased()
     {
         OwnPhysics.RemoveConstraints(Rb);
+        Rb.velocity = Interactor.Rb.velocity *2;
     }
 
     public void SetVariables()

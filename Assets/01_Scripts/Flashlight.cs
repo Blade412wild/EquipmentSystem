@@ -18,8 +18,9 @@ public class Flashlight : MonoBehaviour, IGrabAble, IActivateable
         SetVariables();
     }
 
-    public void HasBeenGrabed()
+    public void HasBeenGrabed(Interactor interactor)
     {
+        Interactor = interactor;
         Vector3 MovePostion = new Vector3(-HoldPos.localPosition.x, -HoldPos.localPosition.y, -HoldPos.localPosition.z);
         transform.localPosition = MovePostion;
         OwnPhysics.FreezePositionAndRotation(Rb);
@@ -29,6 +30,7 @@ public class Flashlight : MonoBehaviour, IGrabAble, IActivateable
     public void HasBeenReleased()
     {
         OwnPhysics.RemoveConstraints(Rb);
+        Rb.velocity = Interactor.Rb.velocity;
     }
 
     public void SetVariables()
